@@ -1,26 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createBrowserHistory from 'history/createBrowserHistory';
-import { Router, Switch, Route, browserHistory } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import { firebaseApp } from './firebase';
+import history from './history';
 
-import SingIn from './components/SingIn';
-import SingUp from './components/SingUp';
+import SignIn from './components/SignIn';
+import SignUp from './components/SignUp';
 import App from './App';
+import App2 from './App2';
 
 firebaseApp.auth().onAuthStateChanged(user => {
     if(user) {
-        console.log("user has singed in", user);
+        history.push('/app');
     } else {
-        console.log("user has singed out");
+        history.replace('/signin');    
     }
 })
 
 ReactDOM.render( 
-    <Router history={createBrowserHistory()}>
-        <Route exact={true} path="/" component={SingIn}/>
+    <Router path="/" history={history}>
         <Route path="/app" component={App}/>
-        <Route path="/singup" component={SingUp}/>
+        <Route path="/app2" component={App2}/>
+        <Route path="/signup" component={SignUp}/>
+        <Route path="/signin" component={SignIn}/>
     </Router>,
     
     document.getElementById('root')

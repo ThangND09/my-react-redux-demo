@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import avatar1 from './assets/avatar-1.jpg';
 import { firebaseApp } from './firebase';
 
-class App extends Component {
+class App2 extends Component {
 
     signOut() {
         firebaseApp.auth().signOut();
@@ -220,4 +220,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default App2;
