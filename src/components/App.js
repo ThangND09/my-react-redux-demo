@@ -11,54 +11,13 @@ class App extends Component {
         super(props);
     }
 
-    signOut() {
-        firebaseApp.auth().signOut();
-    }
-
-    changeAvatar(photoURL){
-        
-        //console.log("Avatar after change", photoURL);
-        photoURL = "../avatar/avatar-3.jpg";
-
-        this.props.changeAvatar("../avatar/avatar-3.jpg");
-
-        const user = firebaseApp.auth().currentUser;
-        user.updateProfile({
-            photoURL: photoURL
-        }).then(function() {
-        }).catch(function(error) {
-        });
-
-        console.log("Avatar befor change", user);
-    }
-
     render(){
         console.log("this.propssssssss",this.props.photoURL);
         return(
-            <div style={{marginTop: 20}} >
+            <div class="col-sm-9">
                 <div class="row">
-                    <div class="col-sm-3">
-                        <div class="col-lg-4 order-lg-1 text-center" style={{margin: "auto"}}>
-                        <img src={this.props.photoURL} class="mx-auto img-fluid img-circle d-block" alt="avatar"/>
-                        <h6 class="mt-2">Upload a different photo</h6>
-                        <div class="custom-file">
-                            <input type="file" onChange={event => this.changeAvatar(event.target.value)}/>
-                        </div>
-                    </div>
-
-                    
-                    <div class="row">
-                        <div style={{margin: "auto", marginTop: 30}}>
-                            <button className="btn btn-danger" onClick={() => this.signOut()}>Sign out</button>
-                        </div>
-                    </div>
-                        {/* <button className="btn btn-danger" onClick={() => this.signOut()}>Sign out</button> */}
-                    </div>
-                    <div class="col-sm-3">
-                        
+                    <div class="col-sm-4">
                         <div class="card-header">Header</div>
-                        
-                        
                         <div class="card border-dark " >
                             <div class="card-header">Header</div>
                             <div class="card-body text-dark">
@@ -171,7 +130,7 @@ class App extends Component {
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <div class="card-header">Header</div>
                         <div class="card border-dark " >
                             <div class="card-header">Header</div>
@@ -211,7 +170,7 @@ class App extends Component {
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <div class="card-header">Header</div>
                         <div class="card border-dark " >
                             <div class="card-header">Header</div>
@@ -252,8 +211,6 @@ class App extends Component {
                         </div>
                     </div>
                 </div>
-
-                
             </div>
         )
     }

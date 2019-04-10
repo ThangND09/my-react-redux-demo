@@ -14,16 +14,14 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { addUser } from './actions/user';
 import user from './reducers/user';
+import Navigator from './components/Navigator';
 
 const store = createStore(user);
 
 firebaseApp.auth().onAuthStateChanged(user => {
     if(user) {
-        console.log("user loged in",user);
         store.dispatch(addUser(user.email, user.photoURL));
-        console.log("after dispatch:", user.photoURL);
     } else {
-        console.log("user not log in",user);
         history.replace('/signin'); 
     }
 })
@@ -31,11 +29,13 @@ firebaseApp.auth().onAuthStateChanged(user => {
 ReactDOM.render( 
     <Provider store={store}>
         <Router path="/" history={history}>
-            <Route path="/app" component={App}/>
-            <Route path="/create_task" component={TaskCreate}/>
             <Route path="/signup" component={SignUp}/>
             <Route path="/signin" component={SignIn}/>
-            <Route path="/user" component={User}/>
+
+            <Route path="/app" component={() => <Navigator Component={{App, User}}></Navigator>} />
+            {/* <Route path="/app" component={App} /> */}
+            <Route path="/create_task" component={() => <Navigator Component={TaskCreate}></Navigator>} />
+            <Route path="/user" component={() => <Navigator Component={User}></Navigator>} />
         </Router>
     </Provider>,
     document.getElementById('root')

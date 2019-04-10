@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { firebaseApp } from '../firebase';
 import history from '../history';
-import defaultAvatar from '../assets/def-avatar.jpg';
 
 class SignUp extends Component {
 
