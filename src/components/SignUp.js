@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { firebaseApp } from '../firebase';
+import history from '../history';
+import defaultAvatar from '../assets/def-avatar.jpg';
 
 class SignUp extends Component {
 
@@ -14,16 +16,21 @@ class SignUp extends Component {
     }
 
     signUp() {
-        console.log("this.state", this.state);
         const { email, password } = this.state;
         firebaseApp.auth().createUserWithEmailAndPassword(email, password)
+            .then(() => {
+                const user = firebaseApp.auth().currentUser;
+                user.updateProfile({
+                    photoURL: "../avatar/def-avatar.jpg"
+                }).then(function() {
+                    history.push('/signin');
+                }).catch(function(error) {
+                    this.setState({error: error.message});
+                });
+            })
             .catch(
                 error => {
-                    console.log("Error", error);
-                    console.log("Email", email);
-                    console.log("Password", password);
                     this.setState({error: error.message});
-                    console.log("Password", this.state.error);
                 }
             )
     }

@@ -1,19 +1,58 @@
 import React, { Component } from 'react';
-import avatar1 from './assets/avatar-1.jpg';
-import { firebaseApp } from './firebase';
+import avatar1 from '../assets/avatar-1.jpg';
+import { firebaseApp } from '../firebase';
+import { connect } from 'react-redux';
+import { changeAvatar } from '../actions/user';
+import { bindActionCreators } from 'redux';
 
 class App extends Component {
+
+    constructor(props) {
+        super(props);
+    }
 
     signOut() {
         firebaseApp.auth().signOut();
     }
 
+    changeAvatar(photoURL){
+        
+        //console.log("Avatar after change", photoURL);
+        photoURL = "../avatar/avatar-3.jpg";
+
+        this.props.changeAvatar("../avatar/avatar-3.jpg");
+
+        const user = firebaseApp.auth().currentUser;
+        user.updateProfile({
+            photoURL: photoURL
+        }).then(function() {
+        }).catch(function(error) {
+        });
+
+        console.log("Avatar befor change", user);
+    }
+
     render(){
+        console.log("this.propssssssss",this.props.photoURL);
         return(
             <div style={{marginTop: 20}} >
                 <div class="row">
                     <div class="col-sm-3">
-                        <button className="btn btn-danger" onClick={() => this.signOut()}>Sign out</button>
+                        <div class="col-lg-4 order-lg-1 text-center" style={{margin: "auto"}}>
+                        <img src={this.props.photoURL} class="mx-auto img-fluid img-circle d-block" alt="avatar"/>
+                        <h6 class="mt-2">Upload a different photo</h6>
+                        <div class="custom-file">
+                            <input type="file" onChange={event => this.changeAvatar(event.target.value)}/>
+                        </div>
+                    </div>
+
+                    
+                    <div class="row">
+                        <div style={{margin: "auto", marginTop: 30}}>
+                            <button className="btn btn-danger" onClick={() => this.signOut()}>Sign out</button>
+                        </div>
+                    </div>
+                        {/* <button className="btn btn-danger" onClick={() => this.signOut()}>Sign out</button> */}
                     </div>
                     <div class="col-sm-3">
                         
@@ -28,7 +67,7 @@ class App extends Component {
                             </div>
                             <div class="card-footer">
                                 <div class="task-list-table" style={{display:"inline-block"}}>
-                                    <a href="#!"><img class="img-fluid img-radius" src={avatar1} alt="1" /></a>
+                                    <a href="#!"><img class="img-fluid img-radius" src={this.props.photoURL} alt="1" /></a>
                                 </div>
                                 <div class="task-board" style={{display:"inline-block", float:"right", marginTop: 50}}>
                                     
@@ -220,4 +259,15 @@ class App extends Component {
     }
 }
 
-export default App;
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({changeAvatar}, dispatch);
+}
+
+function mapStatetoProps(state) {
+    return {
+        email: state.email,
+        photoURL: state.photoURL
+    }
+}
+
+export default connect(mapStatetoProps, mapDispatchToProps) (App);

@@ -6,24 +6,37 @@ import history from './history';
 
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
-import App from './App';
-import App2 from './App2';
+import App from './components/App';
+import User from './components/User';
+import TaskCreate from './components/TaskCreate';
+
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import { addUser } from './actions/user';
+import user from './reducers/user';
+
+const store = createStore(user);
 
 firebaseApp.auth().onAuthStateChanged(user => {
     if(user) {
-        history.push('/app');
+        console.log("user loged in",user);
+        store.dispatch(addUser(user.email, user.photoURL));
+        console.log("after dispatch:", user.photoURL);
     } else {
-        history.replace('/signin');    
+        console.log("user not log in",user);
+        history.replace('/signin'); 
     }
 })
 
 ReactDOM.render( 
-    <Router path="/" history={history}>
-        <Route path="/app" component={App}/>
-        <Route path="/app2" component={App2}/>
-        <Route path="/signup" component={SignUp}/>
-        <Route path="/signin" component={SignIn}/>
-    </Router>,
-    
+    <Provider store={store}>
+        <Router path="/" history={history}>
+            <Route path="/app" component={App}/>
+            <Route path="/create_task" component={TaskCreate}/>
+            <Route path="/signup" component={SignUp}/>
+            <Route path="/signin" component={SignIn}/>
+            <Route path="/user" component={User}/>
+        </Router>
+    </Provider>,
     document.getElementById('root')
 );

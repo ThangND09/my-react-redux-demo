@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { firebaseApp } from '../firebase';
+import history from '../history';
 
 class SignIn extends Component {
 
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             email: "",
             password: "",
@@ -16,6 +17,9 @@ class SignIn extends Component {
     signIn() {
         const { email, password } = this.state;
         firebaseApp.auth().signInWithEmailAndPassword(email, password)
+            .then(() => {
+                history.push('/app');
+            })
             .catch(
                 error => {
                     this.setState({error: error.message});
