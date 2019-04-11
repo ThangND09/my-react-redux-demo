@@ -13,10 +13,11 @@ import TaskCreate from './components/TaskCreate';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { addUser } from './actions/user';
-import user from './reducers/user';
+//import user from './reducers/user';
 import Navigator from './components/Navigator';
+import reducer from './reducers/combineReducers';
 
-const store = createStore(user);
+const store = createStore(reducer);
 
 firebaseApp.auth().onAuthStateChanged(user => {
     if(user) {

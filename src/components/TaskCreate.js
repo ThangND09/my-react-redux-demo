@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import { taskRef } from '../firebase';
 import history from '../history';
+import { firebaseApp } from '../firebase';
+import { connect } from 'react-redux';
 
 class TaskCreate extends Component {
+
+    constructor(props){
+        super(props);
+        this.props.userList.users = [];
+    }
 
     createTask(){
         //const id = Math.random(); 
@@ -12,13 +19,14 @@ class TaskCreate extends Component {
 
         var strUser = owner.options[owner.selectedIndex].text;
 
-        taskRef.push({title: title, detail: description, owner: strUser});
+        taskRef.push({title: title, detail: description, owner: strUser, creator: firebaseApp.auth().currentUser});
 
         history.push("/app");
         
     }
 
     render(){
+        console.log("TaskCreate");
         return(
             <div class="col-sm-9">
                 <form>
@@ -38,8 +46,13 @@ class TaskCreate extends Component {
                         <label for="inputState">Choose person taking care this task</label>
                         <select id="owner" class="form-control">
                             <option selected>Choose...</option>
-                            <option value="nguyen@gmail.com">user1</option>
-                            <option value="thang@gmail.com">user2</option>
+                            {
+                                this.props.userList.users.map(user => {
+                                    return(
+                                        <option value={user.email}>{user.email}</option>
+                                    );
+                                })
+                            }
                         </select>
                         </div>
                     </div>
@@ -50,4 +63,10 @@ class TaskCreate extends Component {
     }
 }
 
-export default TaskCreate;
+function mapStatetoProps(state) {
+    return {
+        userList: state.listAllUser
+    }
+}
+
+export default connect(mapStatetoProps, null) (TaskCreate);

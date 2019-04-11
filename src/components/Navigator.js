@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { firebaseApp } from '../firebase';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { changeAvatar } from '../actions/user';
+import { changeAvatar} from '../actions/user';
+import { listAllUser } from '../actions/user';
 import { Link } from 'react-router-dom';
 import { usersRef } from '../firebase';
 
@@ -12,11 +13,23 @@ class Navigator extends Component{
         super(props);
         this.state = {
             photoURL: ""
-        }
+        };
     }
 
     signOut() {
         firebaseApp.auth().signOut();
+    }
+
+    componentDidMount() {
+        usersRef.on('value', snaps => {
+            let users = [];
+            snaps.forEach( snap => {
+                const {email, photoURL} = snap.val();
+                users.push({email, photoURL});
+            })
+            this.props.listAllUser(users);
+        })
+        
     }
 
     changeAvatar(){
@@ -42,7 +55,6 @@ class Navigator extends Component{
     }
 
     render() {
-        console.log("rerender", this.props.photoURL);
         const Component = this.props.Component;
         return(
             <div style={{marginTop: 20}} >
@@ -72,7 +84,7 @@ class Navigator extends Component{
                         </div>
                     </div>
                     <div class="col-sm-9">
-                        <Component/>
+                        <Component />
                     </div>
                 </div>   
             </div>
@@ -81,13 +93,13 @@ class Navigator extends Component{
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({changeAvatar}, dispatch);
+    return bindActionCreators({changeAvatar, listAllUser}, dispatch);
 }
 
 function mapStatetoProps(state) {
     return {
-        email: state.email,
-        photoURL: state.photoURL
+        email: state.user.email,
+        photoURL: state.user.photoURL
     }
 }
 

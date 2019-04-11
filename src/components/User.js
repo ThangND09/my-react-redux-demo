@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { firebaseApp } from '../firebase';
 import avatar1 from '../assets/avatar-1.jpg';
 
-class TaskCreate extends Component {
+class User extends Component {
 
     signOut() {
         firebaseApp.auth().signOut();
@@ -40,4 +40,4 @@ class TaskCreate extends Component {
     }
 }
 
-export default TaskCreate;
+export default User;

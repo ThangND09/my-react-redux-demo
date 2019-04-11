@@ -9,7 +9,6 @@ class App extends Component {
     }
 
     render(){
-        console.log("this.propssssssss",this.props.photoURL);
         return(
             
                 <div class="row">
@@ -207,14 +206,10 @@ class App extends Component {
     }
 }
 
-// function mapDispatchToProps(dispatch) {
-//     return bindActionCreators({changeAvatar}, dispatch);
-// }
-
 function mapStatetoProps(state) {
     return {
-        email: state.email,
-        photoURL: state.photoURL
+        email: state.user.email,
+        photoURL: state.user.photoURL
     }
 }
 
