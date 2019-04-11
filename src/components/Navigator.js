@@ -3,53 +3,62 @@ import { firebaseApp } from '../firebase';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { changeAvatar } from '../actions/user';
+import { Link } from 'react-router-dom'
 
 class Navigator extends Component{
 
     constructor(props) {
         super(props);
+        this.state = {
+            photoURL: ""
+        }
     }
 
     signOut() {
         firebaseApp.auth().signOut();
     }
 
-    changeAvatar(photoURL){
-        photoURL = "../avatar/avatar-3.jpg";
-        this.props.changeAvatar("../avatar/avatar-3.jpg");
+    changeAvatar(){
         const user = firebaseApp.auth().currentUser;
         user.updateProfile({
-            photoURL: photoURL
+            photoURL: this.state.photoURL
         }).then(function() {
         }).catch(function(error) {
         });
+
+        this.props.changeAvatar(this.state.photoURL);
+    }
+
+    selectAvatar(photoURL){
+        if (photoURL !== "def") {
+            document.getElementById("avatar").src = photoURL;
+            this.setState({photoURL: photoURL});
+        }
     }
 
     render() {
-        
-        const App = this.props.Component.App;
+        console.log("rerender", this.props.photoURL);
+        const Component = this.props.Component;
         return(
             <div style={{marginTop: 20}} >
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="col-lg-4 order-lg-1 text-center" style={{margin: "auto"}}>
-                            <img src={this.props.photoURL} class="mx-auto img-fluid img-circle d-block" alt="avatar"/>
-                            <h6 class="mt-2">Upload a different photo</h6>
-                            {/* <div class="custom-file">
-                                <input type="file" onChange={event => this.changeAvatar(event.target.value)}/>
-                            </div> */}
-                            <div class="dropdown show">
-                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Choose your image
-                                </a>
-
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
-                            </div>
-                            <button type="button" class="btn btn-warning" style={{marginTop: 10}}>Warning</button>
+                            <img src={this.props.photoURL} class="mx-auto img-fluid img-circle d-block" id="avatar" alt="avatar"/>
+                            <h6 class="mt-2">Choose a photo</h6>
+                            <select class="selectpicker text-center" onChange={event => { this.selectAvatar(event.target.value) }}>
+                                    <option value="def">Choose your avatar</option>
+                                    <option value="../avatar/avatar-1.jpg">Image 1</option>
+                                    <option value="../avatar/avatar-2.jpg">Image 2</option>
+                                    <option value="../avatar/avatar-3.jpg">Image 3</option>
+                                    <option value="../avatar/avatar-4.jpg">Image 4</option>
+                                    <option value="../avatar/avatar-5.jpg">Image 5</option>
+                            </select>
+                            <button type="button" class="btn btn-warning" style={{marginTop: 10}} onClick = { () => this.changeAvatar()}>Save</button>
+                        </div>
+                        <hr></hr>
+                        <div class="list-group list-group-flush">
+                            <a href="#" class="list-group-item list-group-item-action bg-light text-center"><Link to="/">Add new task</Link></a>
                         </div>
                         <div class="row">
                             <div style={{margin: "auto", marginTop: 30}}>
@@ -57,8 +66,9 @@ class Navigator extends Component{
                             </div>
                         </div>
                     </div>
-    
-                    <App/>
+                    <div class="col-sm-9">
+                        <Component/>
+                    </div>
                 </div>   
             </div>
         )

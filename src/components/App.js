@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import avatar1 from '../assets/avatar-1.jpg';
-import { firebaseApp } from '../firebase';
 import { connect } from 'react-redux';
-import { changeAvatar } from '../actions/user';
-import { bindActionCreators } from 'redux';
 
 class App extends Component {
 
@@ -14,12 +11,11 @@ class App extends Component {
     render(){
         console.log("this.propssssssss",this.props.photoURL);
         return(
-            <div class="col-sm-9">
+            
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="card-header">Header</div>
                         <div class="card border-dark " >
-                            <div class="card-header">Header</div>
                             <div class="card-body text-dark">
                                 <h5 class="card-title">Dark card title</h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -56,7 +52,6 @@ class App extends Component {
                             </div>
                         </div>
                         <div class="card border-dark " >
-                            <div class="card-header">Header</div>
                             <div class="card-body text-dark">
                                 <h5 class="card-title">Dark card title</h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -93,7 +88,6 @@ class App extends Component {
                             </div>
                         </div>
                         <div class="card border-dark" >
-                            <div class="card-header">Header</div>
                             <div class="card-body text-dark">
                                 <h5 class="card-title">Dark card title</h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -133,7 +127,6 @@ class App extends Component {
                     <div class="col-sm-4">
                         <div class="card-header">Header</div>
                         <div class="card border-dark " >
-                            <div class="card-header">Header</div>
                             <div class="card-body text-dark">
                                 <h5 class="card-title">Dark card title</h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -173,7 +166,6 @@ class App extends Component {
                     <div class="col-sm-4">
                         <div class="card-header">Header</div>
                         <div class="card border-dark " >
-                            <div class="card-header">Header</div>
                             <div class="card-body text-dark">
                                 <h5 class="card-title">Dark card title</h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -211,14 +203,13 @@ class App extends Component {
                         </div>
                     </div>
                 </div>
-            </div>
         )
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({changeAvatar}, dispatch);
-}
+// function mapDispatchToProps(dispatch) {
+//     return bindActionCreators({changeAvatar}, dispatch);
+// }
 
 function mapStatetoProps(state) {
     return {
@@ -227,4 +218,4 @@ function mapStatetoProps(state) {
     }
 }
 
-export default connect(mapStatetoProps, mapDispatchToProps) (App);
+export default connect(mapStatetoProps, null) (App);

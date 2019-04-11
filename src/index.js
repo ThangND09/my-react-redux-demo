@@ -32,7 +32,7 @@ ReactDOM.render(
             <Route path="/signup" component={SignUp}/>
             <Route path="/signin" component={SignIn}/>
 
-            <Route path="/app" component={() => <Navigator Component={{App, User}}></Navigator>} />
+            <Route path="/app" component={() => <Navigator Component={App}></Navigator>} />
             {/* <Route path="/app" component={App} /> */}
             <Route path="/create_task" component={() => <Navigator Component={TaskCreate}></Navigator>} />
             <Route path="/user" component={() => <Navigator Component={User}></Navigator>} />

@@ -29,22 +29,24 @@ class SignIn extends Component {
 
     render() {
         return(
-            <div className="form-inline" style={{marginRight:5}}>
+            <div style={{marginLeft: 50, marginTop: 20}}>
                 <h2>Sign In</h2>
-                <br></br>
-                <div className="form-group">
-                    <input className="form-control" type="text" placeholder="email" style={{marginRight:5}}
-                        onChange={event => this.setState({email: event.target.value})}/>
+                <div className="form-inline" style={{marginTop: 10}}>
+                    <div className="form-group" >
+                        <input className="form-control" type="text" placeholder="email" style={{marginRight:5}}
+                            onChange={event => this.setState({email: event.target.value})}/>
 
-                    <input className="form-control" type="password" placeholder="password" style={{marginRight:5}}
-                        onChange={event => this.setState({password: event.target.value})}/>
-                    
-                    <button className="btn btn-primary" type="button" onClick={() => this.signIn()}>
-                        Sign In
-                    </button>
+                        <input className="form-control" type="password" placeholder="password" style={{marginRight:5}}
+                            onChange={event => this.setState({password: event.target.value})}/>
+                        
+                        <button className="btn btn-primary" type="button" onClick={() => this.signIn()}>
+                            Sign In
+                        </button>
+                    </div>
                 </div>
-                <div>{this.state.error}</div>
-                <div><Link to={'/signup'}> Sign up instead</Link></div>
+                <div style={{marginTop: 10}}>{this.state.error}</div>
+                <div style={{marginTop: 10}}><Link to={'/signup'}> Sign up instead</Link></div>
+                
             </div>
         )
     }
