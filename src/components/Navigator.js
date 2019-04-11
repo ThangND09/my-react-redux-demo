@@ -3,7 +3,8 @@ import { firebaseApp } from '../firebase';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { changeAvatar } from '../actions/user';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { usersRef } from '../firebase';
 
 class Navigator extends Component{
 
@@ -22,7 +23,11 @@ class Navigator extends Component{
         const user = firebaseApp.auth().currentUser;
         user.updateProfile({
             photoURL: this.state.photoURL
-        }).then(function() {
+        }).then(() => {
+            const query = usersRef.orderByChild('email').equalTo(user.email);
+            query.once("child_added", (snapshot) => {
+                snapshot.ref.update({ photoURL: this.state.photoURL })
+            });
         }).catch(function(error) {
         });
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { firebaseApp } from '../firebase';
 import history from '../history';
+import { usersRef } from '../firebase';
 
 class SignUp extends Component {
 
@@ -22,7 +23,10 @@ class SignUp extends Component {
                 user.updateProfile({
                     photoURL: "../avatar/def-avatar.jpg"
                 }).then(function() {
-                    history.push('/signin');
+                    usersRef.push({email: email, photoURL: "../avatar/def-avatar.jpg"})
+                    .then(
+                        history.push('/signin')
+                    )
                 }).catch(function(error) {
                     this.setState({error: error.message});
                 });
