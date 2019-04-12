@@ -29,7 +29,6 @@ class Navigator extends Component{
             })
             this.props.listAllUser(users);
         })
-        
     }
 
     changeAvatar(){
@@ -75,7 +74,8 @@ class Navigator extends Component{
                         </div>
                         <hr></hr>
                         <div class="list-group list-group-flush">
-                            <a href="#" class="list-group-item list-group-item-action bg-light text-center"><Link to="/">Add new task</Link></a>
+                            <Link class="list-group-item list-group-item-action bg-light text-center" to="/app">Task List</Link>
+                            <Link class="list-group-item list-group-item-action bg-light text-center" to="/create_task">Add new task</Link>
                         </div>
                         <div class="row">
                             <div style={{margin: "auto", marginTop: 30}}>

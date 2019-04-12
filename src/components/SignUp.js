@@ -25,7 +25,7 @@ class SignUp extends Component {
                 }).then(function() {
                     usersRef.push({email: email, photoURL: "../avatar/def-avatar.jpg"})
                     .then(
-                        history.push('/signin')
+                        history.push('/app')
                     )
                 }).catch(function(error) {
                     this.setState({error: error.message});

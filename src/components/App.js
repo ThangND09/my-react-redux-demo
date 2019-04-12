@@ -1,216 +1,97 @@
 import React, { Component } from 'react';
-import avatar1 from '../assets/avatar-1.jpg';
 import { connect } from 'react-redux';
+import { taskRef } from '../firebase';
+import { bindActionCreators } from 'redux';
+import { listAllTask } from '../actions/task'
+import TaskItem from './TaskItem';
+
+
 
 class App extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            todoTask: [],
+            inprogressTask: [],
+            reviewTask: []
+        };
+    }
+
+    componentDidMount() {
+        taskRef.on("value", (snap) => {
+            let todoTask = [];
+            let inprogressTask = [];
+            let reviewTask = [];
+
+            snap.forEach(task => {
+                const {detail, owner, status, title} = task.val();
+                const serverKey = task.key;
+                if(owner === this.props.email) {
+                    if (status === 'todo') {
+                        todoTask.push({detail, owner, status, title, serverKey})
+                    } else if (status === 'inprogress') {
+                        inprogressTask.push({detail, owner, status, title, serverKey})
+                    } else if (status === 'review') {
+                        reviewTask.push({detail, owner, status, title, serverKey})
+                    }
+                } 
+            })
+
+            this.props.listAllTask(todoTask, inprogressTask, reviewTask);
+        })
     }
 
     render(){
         return(
-            
                 <div class="row">
                     <div class="col-sm-4">
-                        <div class="card-header">Header</div>
-                        <div class="card border-dark " >
-                            <div class="card-body text-dark">
-                                <h5 class="card-title">Dark card title</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                            <div class="card-footer">
-                                <div class="task-list-table" style={{display:"inline-block"}}>
-                                    <a href="#!"><img class="img-fluid img-radius" src={this.props.photoURL} alt="1" /></a>
-                                </div>
-                                <div class="task-board" style={{display:"inline-block", float:"right", marginTop: 50}}>
-                                    
-                                    <div class="dropdown-secondary dropdown" style={{display:"inline-block", margin:5}}>
-                                        <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Open</button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdown2" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" 
-                                        style={{position: "absolute", transform: "translate3d(0, 26, 0)", top: 0, left: 0, willChange: "transform"}}>
-                                            <a class="dropdown-item waves-light waves-effect active" href="#!">Open</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!">On hold</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!">Resolved</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!">Closed</a>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-secondary dropdown" style={{display:"inline-block", margin:5}}>
-                                        <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdown3" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" 
-                                        style={{position: "absolute", transform: "translate3d(0, 26, 0)", top: 0, left: 0, willChange: "transform"}}>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-ui-alarm"></i> Check in</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-attachment"></i> Attach screenshot</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-spinner-alt-5"></i> Reassign</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-ui-edit"></i> Edit task</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-close-line"></i> Remove</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card border-dark " >
-                            <div class="card-body text-dark">
-                                <h5 class="card-title">Dark card title</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                            <div class="card-footer">
-                                <div class="task-list-table" style={{display:"inline-block"}}>
-                                    <a href="#!"><img class="img-fluid img-radius" src={avatar1} alt="1" /></a>
-                                </div>
-                                <div class="task-board" style={{display:"inline-block", float:"right", marginTop: 50}}>
-                                    
-                                    <div class="dropdown-secondary dropdown" style={{display:"inline-block", margin:5}}>
-                                        <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Open</button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdown2" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" 
-                                        style={{position: "absolute", transform: "translate3d(0, 26, 0)", top: 0, left: 0, willChange: "transform"}}>
-                                            <a class="dropdown-item waves-light waves-effect active" href="#!">Open</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!">On hold</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!">Resolved</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!">Closed</a>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-secondary dropdown" style={{display:"inline-block", margin:5}}>
-                                        <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdown3" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" 
-                                        style={{position: "absolute", transform: "translate3d(0, 26, 0)", top: 0, left: 0, willChange: "transform"}}>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-ui-alarm"></i> Check in</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-attachment"></i> Attach screenshot</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-spinner-alt-5"></i> Reassign</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-ui-edit"></i> Edit task</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-close-line"></i> Remove</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card border-dark" >
-                            <div class="card-body text-dark">
-                                <h5 class="card-title">Dark card title</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                            <div class="card-footer">
-                                <div class="task-list-table" style={{display:"inline-block"}}>
-                                    <a href="#!"><img class="img-fluid img-radius" src={avatar1} alt="1" /></a>
-                                </div>
-                                <div class="task-board" style={{display:"inline-block", float:"right", marginTop: 50}}>
-                                    
-                                    <div class="dropdown-secondary dropdown" style={{display:"inline-block", margin:5}}>
-                                        <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Open</button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdown2" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" 
-                                        style={{position: "absolute", transform: "translate3d(0, 26, 0)", top: 0, left: 0, willChange: "transform"}}>
-                                            <a class="dropdown-item waves-light waves-effect active" href="#!">Open</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!">On hold</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!">Resolved</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!">Closed</a>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-secondary dropdown" style={{display:"inline-block", margin:5}}>
-                                        <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdown3" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" 
-                                        style={{position: "absolute", transform: "translate3d(0, 26, 0)", top: 0, left: 0, willChange: "transform"}}>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-ui-alarm"></i> Check in</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-attachment"></i> Attach screenshot</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-spinner-alt-5"></i> Reassign</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-ui-edit"></i> Edit task</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-close-line"></i> Remove</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="card-header">Todo</div>
+                        {
+                            this.props.todoTask.map((task) => {
+                                return(
+                                    <TaskItem key={task.serverKey} task={task}/>
+                                )
+                            })
+                        }
                     </div>
                     <div class="col-sm-4">
-                        <div class="card-header">Header</div>
-                        <div class="card border-dark " >
-                            <div class="card-body text-dark">
-                                <h5 class="card-title">Dark card title</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                            <div class="card-footer">
-                                <div class="task-list-table" style={{display:"inline-block"}}>
-                                    <a href="#!"><img class="img-fluid img-radius" src={avatar1} alt="1" /></a>
-                                </div>
-                                <div class="task-board" style={{display:"inline-block", float:"right", marginTop: 50}}>
-                                    
-                                    <div class="dropdown-secondary dropdown" style={{display:"inline-block", margin:5}}>
-                                        <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Open</button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdown2" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" 
-                                        style={{position: "absolute", transform: "translate3d(0, 26, 0)", top: 0, left: 0, willChange: "transform"}}>
-                                            <a class="dropdown-item waves-light waves-effect active" href="#!">Open</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!">On hold</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!">Resolved</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!">Closed</a>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-secondary dropdown" style={{display:"inline-block", margin:5}}>
-                                        <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdown3" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" 
-                                        style={{position: "absolute", transform: "translate3d(0, 26, 0)", top: 0, left: 0, willChange: "transform"}}>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-ui-alarm"></i> Check in</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-attachment"></i> Attach screenshot</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-spinner-alt-5"></i> Reassign</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-ui-edit"></i> Edit task</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-close-line"></i> Remove</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="card-header">Inprogress</div>
+                        {
+                            this.props.inprogressTask.map((task) => {
+                                return(
+                                    <TaskItem key={task.serverKey} task={task}/>
+                                )
+                            })
+                        }
                     </div>
                     <div class="col-sm-4">
-                        <div class="card-header">Header</div>
-                        <div class="card border-dark " >
-                            <div class="card-body text-dark">
-                                <h5 class="card-title">Dark card title</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                            <div class="card-footer">
-                                <div class="task-list-table" style={{display:"inline-block"}}>
-                                    <a href="#!"><img class="img-fluid img-radius" src={avatar1} alt="1" /></a>
-                                </div>
-                                <div class="task-board" style={{display:"inline-block", float:"right", marginTop: 50}}>
-                                    
-                                    <div class="dropdown-secondary dropdown" style={{display:"inline-block", margin:5}}>
-                                        <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Open</button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdown2" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" 
-                                        style={{position: "absolute", transform: "translate3d(0, 26, 0)", top: 0, left: 0, willChange: "transform"}}>
-                                            <a class="dropdown-item waves-light waves-effect active" href="#!">Open</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!">On hold</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!">Resolved</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!">Closed</a>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-secondary dropdown" style={{display:"inline-block", margin:5}}>
-                                        <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdown3" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" 
-                                        style={{position: "absolute", transform: "translate3d(0, 26, 0)", top: 0, left: 0, willChange: "transform"}}>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-ui-alarm"></i> Check in</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-attachment"></i> Attach screenshot</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-spinner-alt-5"></i> Reassign</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-ui-edit"></i> Edit task</a>
-                                            <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-close-line"></i> Remove</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="card-header">Review</div>
+                        {
+                            this.props.reviewTask.map((task) => {
+                                return(
+                                    <TaskItem key={task.serverKey} task={task}/>
+                                )
+                            })
+                        }
                     </div>
                 </div>
         )
     }
 }
 
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({listAllTask}, dispatch);
+}
+
 function mapStatetoProps(state) {
     return {
         email: state.user.email,
-        photoURL: state.user.photoURL
+        photoURL: state.user.photoURL,
+        todoTask: state.task.todoTask,
+        inprogressTask: state.task.inprogressTask,
+        reviewTask: state.task.reviewTask
     }
 }
 
-export default connect(mapStatetoProps, null) (App);
+export default connect(mapStatetoProps, mapDispatchToProps) (App);

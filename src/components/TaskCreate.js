@@ -4,6 +4,15 @@ import history from '../history';
 import { firebaseApp } from '../firebase';
 import { connect } from 'react-redux';
 
+class User extends Component{
+    render(){
+        const { email} = this.props.user;
+        return(
+            <option value={email}>{email}</option>
+        )
+    }
+}
+
 class TaskCreate extends Component {
 
     constructor(props){
@@ -16,10 +25,11 @@ class TaskCreate extends Component {
         const title = document.getElementById("title").value;
         const description = document.getElementById("description").value;
         const owner = document.getElementById("owner");
+        const status = "todo";
 
         var strUser = owner.options[owner.selectedIndex].text;
 
-        taskRef.push({title: title, detail: description, owner: strUser, creator: firebaseApp.auth().currentUser});
+        taskRef.push({title: title, detail: description, owner: strUser, status: status});
 
         history.push("/app");
         
@@ -44,19 +54,17 @@ class TaskCreate extends Component {
                     <div class="form-row">
                         <div class="form-group col-md-4">
                         <label for="inputState">Choose person taking care this task</label>
-                        <select id="owner" class="form-control">
-                            <option selected>Choose...</option>
+                        <select id="owner" class="form-control" >
+                            <option selected> Choose ...</option>
                             {
-                                this.props.userList.users.map(user => {
-                                    return(
-                                        <option value={user.email}>{user.email}</option>
-                                    );
-                                })
+                                this.props.userList.users.map( (user, index) => (
+                                    <User key={index} user={user} />
+                                ))
                             }
                         </select>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary" onClick={() => this.createTask()} >Create</button>
+                    <button type="button" class="btn btn-primary" onClick={() => this.createTask()} >Create</button>
                 </form>
             </div>
         )
