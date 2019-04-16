@@ -16,6 +16,7 @@ import { addUser } from './actions/user';
 //import user from './reducers/user';
 import Navigator from './components/Navigator';
 import reducer from './reducers/combineReducers';
+import TaskDetail from './components/TaskDetail';
 
 const store = createStore(reducer);
 
@@ -37,6 +38,15 @@ ReactDOM.render(
             <Route path="/app" component={() => <Navigator Component={App}></Navigator>} />
             {/* <Route path="/app" component={App} /> */}
             <Route path="/create_task" component={() => <Navigator Component={TaskCreate}></Navigator>} />
+
+
+            <Route path="/task_detail" component={() => <Navigator Component={TaskDetail}></Navigator>} />
+
+            
+
+            {/* <Route exact path="/task_detail/:serverKey" render={(props) => <Navigator {...props}/>} /> */}
+            
+
             <Route path="/user" component={() => <Navigator Component={User}></Navigator>} />
         </Router>
     </Provider>,

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { taskRef, completeTaskRef } from '../firebase';
+import { taskRef, completeTaskRef, firebaseApp } from '../firebase';
 
 class TaskItem extends Component {
 
@@ -12,13 +12,10 @@ class TaskItem extends Component {
     }
 
     changeState(){
-        const {detail, owner, status, title, serverKey} = this.props.task;
+        const {serverKey} = this.props.task;
 
-        const query = taskRef.orderByChild('uid').equalTo(serverKey);
-        query.once("child_added", (snapshot) => {
-            console.log("312312323");
-            snapshot.ref.update({ status: "delete" });
-        });
+        firebaseApp.database().ref().child('/tasks/' + serverKey)
+        .update({ status: "delete" });
     }
 
     render() {
@@ -27,7 +24,15 @@ class TaskItem extends Component {
         return(
             <div class="card border-dark " >
                 <div class="card-body text-dark">
-                    <h5 class="card-title"><Link to="/app">Title</Link></h5>
+                    <h5 class="card-title">
+                    {/* <Link to={{ pathname: '/task_detail', state: { serverKey: serverKey} }}>Title</Link> */}
+                    
+
+                    <Link to={`/task_detail?serverKey=${serverKey}`} >Detail</Link>
+
+                    
+                    </h5>
+                    
                     <p class="card-text">{title}</p>
                 </div>
                 <div class="card-footer">
