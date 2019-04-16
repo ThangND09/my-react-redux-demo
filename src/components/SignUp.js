@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { firebaseApp } from '../firebase';
+import { firebaseApp, usersRef } from '../firebase';
 import history from '../history';
-import { usersRef } from '../firebase';
 
 class SignUp extends Component {
 
@@ -24,9 +23,9 @@ class SignUp extends Component {
                     photoURL: "../avatar/def-avatar.jpg"
                 }).then(function() {
                     usersRef.push({email: email, photoURL: "../avatar/def-avatar.jpg"})
-                    .then(
-                        history.push('/app')
-                    )
+                    .then( () => {
+                        history.push('/app');
+                    })
                 }).catch(function(error) {
                     this.setState({error: error.message});
                 });

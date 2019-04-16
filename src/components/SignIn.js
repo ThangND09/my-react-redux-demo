@@ -46,7 +46,6 @@ class SignIn extends Component {
                 </div>
                 <div style={{marginTop: 10}}>{this.state.error}</div>
                 <div style={{marginTop: 10}}><Link to={'/signup'}> Sign up instead</Link></div>
-                
             </div>
         )
     }

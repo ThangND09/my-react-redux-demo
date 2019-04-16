@@ -23,12 +23,10 @@ export const listAllUser = (state = [], action) => {
     let users = null;
     switch (action.type) {
         case LIST_ALL_USER:
-            console.log("Reducers ", action);
             users = action;
             return users;
     
         default:
-            console.log("Reducers ", action);
             return state;
     }
 }

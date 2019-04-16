@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
 import { taskRef } from '../firebase';
 import history from '../history';
-import { firebaseApp } from '../firebase';
 import { connect } from 'react-redux';
 
 class User extends Component{
     render(){
         const { email} = this.props.user;
-        return(
-            <option value={email}>{email}</option>
-        )
+        const defaultUser = this.props.defaultUser;
+
+        if (defaultUser.email === email) {
+            return(
+                <option selected value={email}>{email}</option>
+            )
+        } else {
+            return(
+                <option value={email}>{email}</option>
+            )
+        }
     }
 }
 
@@ -21,22 +28,16 @@ class TaskCreate extends Component {
     }
 
     createTask(){
-        //const id = Math.random(); 
         const title = document.getElementById("title").value;
         const description = document.getElementById("description").value;
         const owner = document.getElementById("owner");
         const status = "todo";
-
         var strUser = owner.options[owner.selectedIndex].text;
-
         taskRef.push({title: title, detail: description, owner: strUser, status: status});
-
         history.push("/app");
-        
     }
 
     render(){
-        console.log("TaskCreate");
         return(
             <div class="col-sm-9">
                 <form>
@@ -55,10 +56,9 @@ class TaskCreate extends Component {
                         <div class="form-group col-md-4">
                         <label for="inputState">Choose person taking care this task</label>
                         <select id="owner" class="form-control" >
-                            <option selected> Choose ...</option>
                             {
                                 this.props.userList.users.map( (user, index) => (
-                                    <User key={index} user={user} />
+                                    <User key={index} user={user} defaultUser={this.props.user}/>
                                 ))
                             }
                         </select>
@@ -73,7 +73,8 @@ class TaskCreate extends Component {
 
 function mapStatetoProps(state) {
     return {
-        userList: state.listAllUser
+        userList: state.listAllUser,
+        user: state.user
     }
 }
 

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { taskRef } from '../firebase';
-import { firebaseApp } from '../firebase';
+import { taskRef, firebaseApp } from '../firebase';
 import { connect } from 'react-redux';
 import history from '../history';
 
@@ -39,7 +38,6 @@ class Status extends Component{
 }
 
 class TaskDetail extends Component {
-
     constructor(props){
         super(props);
         this.props.userList.users = [];
@@ -62,7 +60,6 @@ class TaskDetail extends Component {
         .once('value')
         .then( (snapshot) => {
                 var value = snapshot.val();
-                console.log("thanggggggggggggggggg",value.detail);
                 this.setState({
                     serverKey: serverKey,
                     detail: value.detail,
@@ -72,13 +69,9 @@ class TaskDetail extends Component {
                 });
               }
         )
-
-        
-        
     }
 
     updateTask() {
-        //const id = Math.random(); 
         const title = document.getElementById("title").value;
         const detail = document.getElementById("description").value;
         const owner = document.getElementById("owner");
@@ -100,7 +93,6 @@ class TaskDetail extends Component {
     }
 
     render(){
-        console.log("TaskCreate");
         return(
             <div class="col-sm-9">
                 <form>

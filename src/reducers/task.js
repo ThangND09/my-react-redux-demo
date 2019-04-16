@@ -9,8 +9,6 @@ const task = (state = { todoTask: [], inprogressTask: [], reviewTask: []}, actio
                 inprogressTask: action.inprogressTask,
                 reviewTask: action.reviewTask
             }
-
-            console.log("LIST_ALL_TASKLIST_ALL_TASK", tasks);
             return tasks;
     
         default:

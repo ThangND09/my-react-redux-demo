@@ -21,7 +21,6 @@ export const changeAvatar = (photoURL) => {
 }
 
 export const listAllUser = (users) => {
-    console.log("action", users);
     const action = {
         type: LIST_ALL_USER,
         users

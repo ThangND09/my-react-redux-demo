@@ -3,18 +3,14 @@ import ReactDOM from 'react-dom';
 import { Router, Route } from 'react-router-dom';
 import { firebaseApp } from './firebase';
 import history from './history';
-
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
-import App from './components/App';
-import User from './components/User';
+import TaskList from './components/TaskList';
 import TaskCreate from './components/TaskCreate';
-
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { addUser } from './actions/user';
-//import user from './reducers/user';
-import Navigator from './components/Navigator';
+import App from './components/App';
 import reducer from './reducers/combineReducers';
 import TaskDetail from './components/TaskDetail';
 
@@ -28,26 +24,14 @@ firebaseApp.auth().onAuthStateChanged(user => {
     }
 })
 
-
 ReactDOM.render( 
     <Provider store={store}>
         <Router path="/" history={history}>
             <Route path="/signup" component={SignUp}/>
             <Route path="/signin" component={SignIn}/>
-
-            <Route path="/app" component={() => <Navigator Component={App}></Navigator>} />
-            {/* <Route path="/app" component={App} /> */}
-            <Route path="/create_task" component={() => <Navigator Component={TaskCreate}></Navigator>} />
-
-
-            <Route path="/task_detail" component={() => <Navigator Component={TaskDetail}></Navigator>} />
-
-            
-
-            {/* <Route exact path="/task_detail/:serverKey" render={(props) => <Navigator {...props}/>} /> */}
-            
-
-            <Route path="/user" component={() => <Navigator Component={User}></Navigator>} />
+            <Route path="/app" component={() => <App Component={TaskList}></App>} />
+            <Route path="/create_task" component={() => <App Component={TaskCreate}></App>} />
+            <Route path="/task_detail" component={() => <App Component={TaskDetail}></App>} />
         </Router>
     </Provider>,
     document.getElementById('root')
