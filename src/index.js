@@ -18,7 +18,7 @@ const store = createStore(reducer);
 
 firebaseApp.auth().onAuthStateChanged(user => {
     if(user) {
-        store.dispatch(addUser(user.email, user.photoURL));
+        store.dispatch(addUser(user.email, "../avatar/def-avatar.jpg"));
     } else {
         history.replace('/signin'); 
     }
