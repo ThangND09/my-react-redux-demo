@@ -13,3 +13,4 @@ export const firebaseApp = firebase.initializeApp(config);
 export const taskRef = firebase.database().ref('tasks');
 export const usersRef = firebase.database().ref('users');
 export const completeTaskRef = firebase.database().ref('completeTaskRef');
+export const deleteTaskRef = firebase.database().ref('deleteTaskRef');
